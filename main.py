@@ -14,7 +14,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", default="cpu", type=str)
     parser.add_argument("--prn", default=True, type=bool)
-    parser.add_argument("--input", type=str, default="tests/JianzhuGuo.jpg", help="Path to input image (face have save 256 * 256)")
+    parser.add_argument("--input", type=str, default="tests/4.jpg", help="Path to input image (face have save 256 * 256)")
     parser.add_argument("--style", type=str, default="tests/uv_face_sticker.png", help="Path to sticker (h=w) in Face Texture")
     parser.add_argument("--savedir", type=str, default="output/")
     args = parser.parse_args()
@@ -81,8 +81,6 @@ class AddSticker:
         img = self.check_input(path_input)
         img_origin = img.copy()
         bbox = face_bbox(img)
-        bbox = self.transform_to_square_bbox(bbox[0])
-        img = self.crop(bbox, img)
         return img, img_origin, bbox
 
     def restore_img(self, img, img_ori, bbox):
@@ -92,28 +90,35 @@ class AddSticker:
         img_ori[y1: y2, x1: x2] = img
         return img_ori
 
-    def run(self, path_input, path_sticker, is_Save=True, savedir='output/'):
+    def save_result(self, path_input, savedir, result):
+        if '/' in path_input:
+            img_name = path_input.split('/')[-1].split('.')[0]
+        else:
+            img_name = path_input.split('.')[0]
+        if not os.path.exists(savedir):
+            os.mkdir(savedir)
+        fn_path = os.path.join(savedir, f'{img_name}.png')
+        cv2.imwrite(fn_path, result)
+        print('Save result 👉: ', fn_path)
+
+    def run(self, path_input, path_sticker, is_Save=True, savedir='output'):
         img_A, img_A_origin, bbox = self.process_input(path_input)
         model = Makeup()
-        model.prn_process(img_A)
-        A_txt = model.get_texture()
-        sticker, sticker_t = self.process_sticker(path_sticker)
-        result = self.add(A_txt, sticker, sticker_t)
-        output = model.render_texture(result)
-        final = self.blend(output, img_A)
-        final_of_final = self.restore_img(final, img_A_origin, bbox)
+        for bb in bbox:
+            bb = self.transform_to_square_bbox(bb)
+            img_A = self.crop(bb, img_A_origin)
+            model.prn_process(img_A)
+            A_txt = model.get_texture()
+            sticker, sticker_t = self.process_sticker(path_sticker)
+            result = self.add(A_txt, sticker, sticker_t)
+            output = model.render_texture(result)
+            final = self.blend(output, img_A)
+            final_of_final = self.restore_img(final, img_A_origin, bb)
         if is_Save:
-            if '/' in path_input:
-                img_name = path_input.split('/')[-1].split('.')[0]
-            else:
-                img_name = path_input.split('.')[0]
-            # check savedir is exist
-            fn_path = os.path.join(savedir, f'{img_name}.png')
-            cv2.imwrite(fn_path, final_of_final)
-            print('Save result 👉: ', fn_path)
-        return final
+            self.save_result(path_input, savedir, final_of_final)
+        return final_of_final
 
 if __name__ == "__main__":
     args = get_args()
     add_sticker = AddSticker()
-    output = add_sticker.run(args.input, args.style)
+    output = add_sticker.run(args.input, args.style, savedir=args.savedir)
