@@ -1,36 +1,41 @@
-# AR-filter-cpm
+# AR Filter based-on PRNet
 
+How to use:
 ```
 git clone https://github.com/KudoKhang/AR-filter-cpm
 cd AR-filter-cpm
-pip install gdown
-gdown --id 1UoE-XuW1SDLUjZmJPkIZ1MLxvQFgmTFH -O PRNet/net-data
-python main.py --input "tests/input.jpg" --style "tests/fillter256.png"
+sh ./build.sh
+python main.py --input "tests/JianzhuGuo.jpg" --style "tests/uv_face_sticker.png"
 ```
 IN THRER:
 
---input: A straight face have size 256 * 256
+--input: A person image
+ 
 <p align="center">
-    <img src="tests/input.jpg" height="256" width="256">
+    <img src="tests/JianzhuGuo.jpg">
 </p>
 
 --style: A square mask
 
 <p align="center">
-    <img src="tests/fillter256.png" height="256" width="256">
+    <img src="tests/uv_face_sticker.png" height="256" width="256">
 </p>
 Result:
 <p align="center">
-    <img src="result.png">
+    <img src="output/JianzhuGuo.png">
 </p>
 
-Note: Create mask based-on face UV_texture (using https://pixlr.com or photoshop)
+Guide: Create mask based-on face UV_texture of PRNet (using https://pixlr.com or photoshop)
 
 <p align="center">
-    <img src="tests/faceFeminine.jpg" height="256" width="256">
+    <img src="tests/uv_face_PRNet.png" height="256" width="256">
 </p>
 
 # Todo-list:
-- [ ] Face detection
+- [x] Face detection
 
-- [ ] Transfrom rectangle bbox -> square bbox (256 * 256)
+- [x] Transfrom rectangle bbox -> square bbox (256 * 256)
+
+- [x] Restore image
+
+- [ ] Set opacity
