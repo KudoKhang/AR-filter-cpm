@@ -29,3 +29,8 @@ Note: Create mask based-on face UV_texture (using https://pixlr.com or photoshop
 <p align="center">
     <img src="tests/faceFeminine.jpg" height="256" width="256">
 </p>
+
+# Todo-list:
+- [ ] Face detection
+
+- [ ] Transfrom rectangle bbox -> square bbox (256 * 256)
