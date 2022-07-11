@@ -68,7 +68,7 @@ class AddSticker:
         cv2.imwrite(fn_path, result)
         print('Save result 👉: ', fn_path)
 
-    def run(self, path_input, path_sticker, is_Save=True, savedir='output'):
+    def run(self, path_input, path_sticker='tests/uv_face_sticker.png', is_Save=True, savedir='output'):
         img_A, img_A_origin, bbox = self.process_input(path_input)
         model = Makeup()
         # model = self.model # can't call: AttributeError:'AddSticker obj has no atribute 'model'

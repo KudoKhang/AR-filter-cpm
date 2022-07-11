@@ -3,9 +3,7 @@ import tensorflow as tf
 import tensorflow.contrib.layers as tcl
 from tensorflow.contrib.framework import arg_scope
 
-
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-
 
 def resBlock(
     x,

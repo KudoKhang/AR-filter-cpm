@@ -37,5 +37,5 @@ Guide: Create mask based-on face UV_texture of PRNet (using https://pixlr.com or
 # Todo-list:
 
 - [ ] Gradio -> Hugging Face
-
+- [ ] ONNX
 - [ ] Set opacity
