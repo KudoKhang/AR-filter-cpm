@@ -1,9 +1,6 @@
-import os
-
 import cv2
 import numpy as np
-from makeup import Makeup
-from PIL import Image
+from modules.makeup import Makeup
 
 from FaceBoxes import FaceBoxes
 import gradio as gr

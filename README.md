@@ -1,6 +1,9 @@
 # AR Filter based-on PRNet
 
-How to use:
+➡️ *Try it in Google Colab [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1F1yCr-JPaTXQNSUQt9gnkIRJlvdQkea3?usp=sharing)*
+
+-------------
+
 ```
 git clone https://github.com/KudoKhang/AR-filter-cpm
 cd AR-filter-cpm
@@ -32,10 +35,7 @@ Guide: Create mask based-on face UV_texture of PRNet (using https://pixlr.com or
 </p>
 
 # Todo-list:
-- [x] Face detection
 
-- [x] Transfrom rectangle bbox -> square bbox (256 * 256)
-
-- [x] Restore image
+- [ ] Gradio -> Hugging Face
 
 - [ ] Set opacity

@@ -8,7 +8,6 @@ from utils.api import PRN
 from utils.render import prepare_tri_weights, render_by_tri, render_texture
 from utils.utils import de_norm, to_tensor, to_var
 
-
 class Makeup:
     def __init__(self):
         self.prn = PRN(is_dlib=True)
