@@ -3,10 +3,8 @@ from modules.addSticker import AddSticker
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--device", default="cpu", type=str)
-    parser.add_argument("--prn", default=True, type=bool)
-    parser.add_argument("--input", type=str, default="tests/persons.jpg", help="Path to input image (face have save 256 * 256)")
-    parser.add_argument("--style", type=str, default="tests/uv_face_sticker.png", help="Path to sticker (h=w) in Face Texture")
+    parser.add_argument("--input", type=str, default="tests/persons.jpg", help="Path to input image")
+    parser.add_argument("--style", type=str, default="tests/uv_face_sticker.png", help="Path to square sticker in Face Texture")
     parser.add_argument("--savedir", type=str, default="output/")
     args = parser.parse_args()
     print("           ⊱ ──────ஓ๑♡๑ஓ ────── ⊰")

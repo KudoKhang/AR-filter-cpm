@@ -2,30 +2,17 @@ import os
 import cv2
 import numpy as np
 from modules.makeup import Makeup
-import warnings
-warnings.filterwarnings('ignore')
 from FaceBoxes import FaceBoxes
+from utils.utils import get_prefix, check_input
 
 class AddSticker:
     def __int__(self):
-        pass
+        self.model = Makeup()
 
-    def check_input(self, img_path):
-        if type(img_path) == str:
-            if img_path.endswith(('.jpg', '.png', '.jpeg')):
-                img = cv2.imread(img_path)
-            else:
-                raise Exception("Please input a image file")
-        elif type(img_path) == np.ndarray:
-            img = img_path
-        return img
-
-    def process_sticker(self, path_sticker):
-        sticker = self.check_input(path_sticker)
-        sticker = cv2.resize(sticker, (256, 256))
-        sticker_g = cv2.cvtColor(sticker, cv2.COLOR_BGR2GRAY)
-        _, sticker_t = cv2.threshold(sticker_g, 10, 255, cv2.THRESH_BINARY_INV)
-        return sticker, sticker_t
+    def crop(self, bbox, img):
+        x1, y1, x2, y2 = np.uint32(bbox)
+        img = img[y1:y2, x1:x2]
+        return cv2.resize(img, (256, 256))
 
     def add(self, img, sticker, sticker_t):
         sticker_no_focus = cv2.add(img, sticker, mask=sticker_t)
@@ -52,14 +39,16 @@ class AddSticker:
         roi_box[3] = roi_box[1] + size
         return roi_box
 
-    def crop(self, bbox, img):
-        x1, y1, x2, y2 = np.uint32(bbox)
-        img = img[y1:y2, x1:x2]
-        return cv2.resize(img, (256, 256))
+    def process_sticker(self, path_sticker):
+        sticker = check_input(path_sticker)
+        sticker = cv2.resize(sticker, (256, 256))
+        sticker_g = cv2.cvtColor(sticker, cv2.COLOR_BGR2GRAY)
+        _, sticker_t = cv2.threshold(sticker_g, 10, 255, cv2.THRESH_BINARY_INV)
+        return sticker, sticker_t
 
     def process_input(self, path_input):
         face_bbox = FaceBoxes()
-        img = self.check_input(path_input)
+        img = check_input(path_input)
         img_origin = img.copy()
         bbox = face_bbox(img)
         return img, img_origin, bbox
@@ -72,12 +61,9 @@ class AddSticker:
         return img_ori
 
     def save_result(self, path_input, savedir, result):
-        if '/' in path_input:
-            img_name = path_input.split('/')[-1].split('.')[0]
-        else:
-            img_name = path_input.split('.')[0]
         if not os.path.exists(savedir):
             os.mkdir(savedir)
+        img_name = get_prefix(path_input)
         fn_path = os.path.join(savedir, f'{img_name}.png')
         cv2.imwrite(fn_path, result)
         print('Save result 👉: ', fn_path)
@@ -85,6 +71,7 @@ class AddSticker:
     def run(self, path_input, path_sticker, is_Save=True, savedir='output'):
         img_A, img_A_origin, bbox = self.process_input(path_input)
         model = Makeup()
+        # model = self.model # can't call: AttributeError:'AddSticker obj has no atribute 'model'
         for bb in bbox:
             bb = self.transform_to_square_bbox(bb)
             img_A = self.crop(bb, img_A_origin)

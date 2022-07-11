@@ -8,6 +8,9 @@ from utils.api import PRN
 from utils.render import prepare_tri_weights, render_by_tri, render_texture
 from utils.utils import de_norm, to_tensor, to_var
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # Ignore warning -> https://stackoverflow.com/questions/47068709/your-cpu-supports-instructions-that-this-tensorflow-binary-was-not-compiled-to-u
+
 class Makeup:
     def __init__(self):
         self.prn = PRN(is_dlib=True)
