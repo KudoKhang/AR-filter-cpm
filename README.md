@@ -34,8 +34,15 @@ Guide: Create mask based-on face UV_texture of PRNet (using https://pixlr.com or
     <img src="tests/uv_face_PRNet.png" height="256" width="256">
 </p>
 
+----
+# Docker
+``` bash
+sh ./run.sh
+docker exec -it <CONTAINER-ID> bash
+python main.py
+```
 # Todo-list:
 
 - [ ] Gradio -> Hugging Face
-- [ ] ONNX
+- [x] Dockerfile
 - [ ] Set opacity

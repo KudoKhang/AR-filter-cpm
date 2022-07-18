@@ -2,7 +2,7 @@
 
 /.idea/
 __pycache__
-/gradio-app
+/gradio-app/
 
 detect_face.py
 test.py

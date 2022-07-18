@@ -1,9 +1,11 @@
-dlib
-dominate==2.6.0
-numpy==1.16.6
-opencv-python==4.5.1.48
 Pillow
 scikit-image
+protobuf==3.20.*
+matplotlib
+Cython
+opencv-python
 tensorflow-gpu==1.14.0
 torch==1.6.0
 torchvision==0.7.0
+numpy==1.16.6
+dlib

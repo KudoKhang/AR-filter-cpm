@@ -1,5 +1,6 @@
 import argparse
 from modules.addSticker import AddSticker
+import time
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -17,4 +18,6 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     add_sticker = AddSticker()
+    start = time.time()
     output = add_sticker.run(args.input, args.style, savedir=args.savedir)
+    print("Time inference: ", round((time.time() - start), 2), 's')

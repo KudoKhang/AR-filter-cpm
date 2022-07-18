@@ -1,9 +1,13 @@
+import os
 import cv2
 import numpy as np
 from modules.makeup import Makeup
+from PIL import Image
 
 from FaceBoxes import FaceBoxes
 import gradio as gr
+
+# Requirement numpy > 1.17
 
 def process_sticker(path_sticker):
     sticker = cv2.imread(path_sticker)
@@ -83,4 +87,4 @@ examples = [
             ['tests/g3.jpg'],
 ]
 
-gr.Interface(run, inputs, outputs, title=title, description=description, examples=examples).launch(debug=True,enable_queue=True)
+gr.Interface(run, inputs, outputs, title=title, description=description, examples=examples).launch(debug=False,enable_queue=False, share=True);
