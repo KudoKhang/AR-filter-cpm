@@ -5,9 +5,11 @@ from modules.makeup import Makeup
 from FaceBoxes import FaceBoxes
 from utils.utils import get_prefix, check_input
 
-class AddSticker:
-    def __int__(self):
+class AddSticker(object):
+    def __init__(self, is_Save=True, savedir='output'):
         self.model = Makeup()
+        self.is_Save = is_Save
+        self.savedir = savedir
 
     def crop(self, bbox, img):
         x1, y1, x2, y2 = np.uint32(bbox)
@@ -68,10 +70,10 @@ class AddSticker:
         cv2.imwrite(fn_path, result)
         print('Save result 👉: ', fn_path)
 
-    def run(self, path_input, path_sticker='tests/uv_face_sticker.png', is_Save=True, savedir='output'):
+    def run(self, path_input, path_sticker='tests/uv_face_sticker.png'):
         img_A, img_A_origin, bbox = self.process_input(path_input)
-        model = Makeup()
-        # model = self.model # can't call: AttributeError:'AddSticker obj has no atribute 'model'
+        # model = Makeup()
+        model = self.model # can't call: AttributeError:'AddSticker obj has no atribute 'model'
         for bb in bbox:
             bb = self.transform_to_square_bbox(bb)
             img_A = self.crop(bb, img_A_origin)
@@ -82,6 +84,6 @@ class AddSticker:
             output = model.render_texture(result)
             final = self.blend(output, img_A)
             final_of_final = self.restore_img(final, img_A_origin, bb)
-        if is_Save:
-            self.save_result(path_input, savedir, final_of_final)
+        if self.is_Save:
+            self.save_result(path_input, self.savedir, final_of_final)
         return final_of_final
